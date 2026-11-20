@@ -220,6 +220,83 @@
     };
   });
 
+  /* ===== Ch4 practice (HW3) ===== */
+  hook('c4-hw-rp', (b, P) => {
+    const env = () => angleEnv(1, { d2: rnd(0.1, 1), td1: rnd(-1, 1), dd2: rnd(-1, 1) });
+    const V = angVars(1).concat(['d2', 'td1', 'dd2']), H = symHint('c1, s1, d2, td1 (= θ̇₁), dd2 (= ḋ₂)');
+    const v0 = e => [[-e.d2 * e.s1 * e.td1 + e.c1 * e.dd2], [e.d2 * e.c1 * e.td1 + e.s1 * e.dd2]];
+    const { r, sp } = b.calcData;
+    return {
+      1: ck('¹₂R(숫자)과 ¹P₂(기호)를 쓰시오.', mat('¹₂R', [[0, 0, 1], [1, 0, 0], [0, 1, 0]]), sym('¹P₂', 3, 1, e => [[e.d2], [0], [0]], env, V, { hint: H })),
+      2: ck('¹ω₁과 ¹v₁을 쓰시오.', sym('¹ω₁', 3, 1, e => [[0], [0], [e.td1]], env, V, { hint: H }), sym('¹v₁', 3, 1, () => [[0], [0], [0]], env, V, { hint: H })),
+      3: ck('²ω₂와 ²v₂를 쓰시오.', sym('²ω₂', 3, 1, e => [[0], [e.td1], [0]], env, V, { hint: H }), sym('²v₂', 3, 1, e => [[e.d2 * e.td1], [0], [e.dd2]], env, V, { hint: H })),
+      4: ck('⁰v₂의 x, y 성분과 ⁰J를 쓰시오.', sym('⁰v₂', 2, 1, v0, env, V, { hint: H }), sym('⁰J', 2, 2, e => [[-e.d2 * e.s1, e.c1], [e.d2 * e.c1, e.s1]], env, V, { hint: H })),
+      5: ck('⁰P₂의 x, y 성분을 쓰시오.', sym('⁰P₂', 2, 1, e => [[e.d2 * e.c1], [e.d2 * e.s1]], env, V, { hint: H })),
+      6: ck('⁰v₂(숫자)와 크기를 구하시오.', mat('⁰v₂', r.v0.map(x => [x]), { tol: 0.0006 }), num('|⁰v₂|', sp, { tol: 0.0006 }))
+    };
+  });
+  hook('c4-hw-3r', (b, P) => {
+    const env = () => angleEnv(3, { L1: 0.4, L2: 0.3, L3: 0.1, td1: rnd(-1, 1), td2: rnd(-1, 1), td3: rnd(-1, 1), fx: rnd(-5, 5), fy: rnd(-5, 5), nz: rnd(-2, 2) });
+    const V = angVars(3).concat(['L1', 'L2', 'L3', 'td1', 'td2', 'td3', 'fx', 'fy', 'nz']);
+    const H = symHint('c2, s2, c3, s3, c23, s23, L1, L2, L3, td1 td2 td3 (= θ̇ᵢ), fx, fy, nz');
+    const J = e => [[e.L1 * e.s23 + e.L2 * e.s3, e.L2 * e.s3, 0], [e.L1 * e.c23 + e.L2 * e.c3 + e.L3, e.L2 * e.c3 + e.L3, e.L3], [1, 1, 1]];
+    const Jt = e => { const A = J(e); return [0, 1, 2].map(i => [0, 1, 2].map(j => A[j][i])); };
+    const t12 = e => e.td1 + e.td2, t123 = e => e.td1 + e.td2 + e.td3;
+    const tau = e => { const A = Jt(e); return A.map(r => r[0] * e.fx + r[1] * e.fy + r[2] * e.nz); };
+    const { rates } = b.calcData;
+    const rm = (w, i) => mat(`Θ̇ (θ₂ = ${P.ths[i]}°)`, w.map(x => [x]), { tol: Math.max(0.005, Math.max(...w.map(Math.abs)) * 0.003) });
+    return {
+      1: ck('²ω₂와 ²v₂를 쓰시오.', sym('²ω₂', 3, 1, e => [[0], [0], [t12(e)]], env, V, { hint: H }), sym('²v₂', 3, 1, e => [[e.L1 * e.s2 * e.td1], [e.L1 * e.c2 * e.td1], [0]], env, V, { hint: H })),
+      2: ck('³ω₃와 ³v₃를 쓰시오.', sym('³ω₃', 3, 1, e => [[0], [0], [t123(e)]], env, V, { hint: H }), sym('³v₃', 3, 1, e => [[e.L1 * e.s23 * e.td1 + e.L2 * e.s3 * t12(e)], [e.L1 * e.c23 * e.td1 + e.L2 * e.c3 * t12(e)], [0]], env, V, { hint: H })),
+      3: ck('ᵀJ(Θ)를 쓰시오 (행: vx, vy, ωz).', sym('ᵀJ', 3, 3, J, env, V, { hint: H })),
+      4: ck('τ₃를 쓰시오.', sym('τ₃', 1, 1, e => [[tau(e)[2]]], env, V, { hint: H })),
+      5: ck('τ₂를 쓰시오.', sym('τ₂', 1, 1, e => [[tau(e)[1]]], env, V, { hint: H })),
+      6: ck('τ₁과 행렬 A(Θ)를 쓰시오.', sym('τ₁', 1, 1, e => [[tau(e)[0]]], env, V, { hint: H }), sym('A', 3, 3, Jt, env, V, { hint: H })),
+      7: self(),
+      8: ck('det ᵀJ를 간단히 쓰고, 특이점이 되는 θ₂를 모두 구하시오.', sym('det J', 1, 1, e => [[e.L1 * e.L2 * e.s2]], env, V, { hint: H }), set('θ₂', [0, 180])),
+      9: ck('각 θ₂에서 Θ̇ = J⁻¹v를 구하시오.', ...rates.map(rm))
+    };
+  });
+  hook('c4-hw-sensor', (b, P) => {
+    const { Pv, tN, Tf } = b.calcData;
+    const T4 = [[1, 0, 0, Pv[0]], [0, 1, 0, Pv[1]], [0, 0, 1, Pv[2]], [0, 0, 0, 1]];
+    return {
+      1: ck('ᵀ_ST를 구하시오.', mat('ᵀ_ST', T4)),
+      2: ck('ᵀ_ST_f (6×6)를 쓰시오.', mat('T_f', Tf)),
+      3: ck('ᵀF와 ᵀN을 구하시오.', vec3('ᵀF', P.F, { tol: 0.002 }), vec3('ᵀN', tN, { tol: 0.002 })),
+      4: self()
+    };
+  });
+
+  /* ===== Ch5 practice ===== */
+  hook('c5-hw-cubic', (b, P) => {
+    const { a, v } = b.calcData, cb = window.TRAJ.cubic(P.t0, P.tf, P.T);
+    return {
+      1: ck('a₀, a₁, a₂, a₃를 구하시오.', num('a₀', a[0]), num('a₁', a[1]), num('a₂', a[2], { tol: 0.002 }), num('a₃', a[3], { tol: 0.002 })),
+      2: ck(`t = ${P.tq} s에서 θ, θ̇, θ̈를 구하시오.`, num('θ', v[0], { tol: 0.02 }), num('θ̇', v[1], { tol: 0.02 }), num('θ̈', v[2], { tol: 0.02 })),
+      3: ck('최대 속도의 시각, 최대 속도, 시작 가속도를 구하시오.', num('t', P.T / 2, { tol: 0.002 }), num('θ̇max', cb.ev(P.T / 2)[1], { tol: 0.02 }), num('θ̈(0)', 2 * a[2], { tol: 0.02 }))
+    };
+  });
+  hook('c5-hw-lpb', (b, P) => {
+    const { lp, vq } = b.calcData;
+    return {
+      1: ck('최소 가속도를 구하시오.', num('θ̈min', lp.Amin, { tol: 0.02 })),
+      2: ck('t_b를 구하시오.', num('t_b', lp.tb, { tol: 0.002 })),
+      3: ck('θ_b와 직선 속도를 구하시오.', num('θ_b', lp.thb, { tol: 0.02 }), num('θ̇lin', lp.V, { tol: 0.02 })),
+      4: ck('그 시각의 θ를 구하시오.', num('θ', vq[0], { tol: 0.02 }))
+    };
+  });
+  hook('c5-hw-via', (b, P) => {
+    const { r } = b.calcData, t = { tol: 0.002 }, w = { tol: 0.02 };
+    return {
+      1: ck('θ̈₁, t₁, θ̇₁₂를 구하시오.', num('θ̈₁', r.acc[0]), num('t₁', r.tb[0], t), num('θ̇₁₂', r.vel[0], w)),
+      2: ck('θ̇₂₃를 구하시오.', num('θ̇₂₃', r.vel[1], w)),
+      3: ck('θ̈₄, t₄, θ̇₃₄를 구하시오.', num('θ̈₄', r.acc[3]), num('t₄', r.tb[3], t), num('θ̇₃₄', r.vel[2], w)),
+      4: ck('θ̈₂, t₂, θ̈₃, t₃를 구하시오.', num('θ̈₂', r.acc[1]), num('t₂', r.tb[1], t), num('θ̈₃', r.acc[2]), num('t₃', r.tb[2], t)),
+      5: ck('t₁₂, t₂₃, t₃₄를 구하시오.', num('t₁₂', r.lin[0], t), num('t₂₃', r.lin[1], t), num('t₃₄', r.lin[2], t))
+    };
+  });
+
   /* ===== Mock exam ===== */
   const AX = { x: rx, y: ry, z: rz };
   hook('x-p1', (b, P) => {

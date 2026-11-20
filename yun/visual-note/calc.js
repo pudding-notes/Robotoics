@@ -382,6 +382,39 @@
     setCalc(b, 5, [C.comp, pol(num(R36[2][2], 4), `√(${sq(R36[2][0])} + ${sq(R36[2][1])})`, R36[2][2], Math.hypot(R36[2][0], R36[2][1]), 'θ₅ = atan2(√(r₃₁²+r₃₂²), r₃₃) → Pol(r₃₃, √…):'),
       pol(num(R36[0][2], 4), num(R36[1][2], 4), R36[0][2], R36[1][2], 'θ₄ = Pol(r₁₃, r₂₃):'), pol(num(-R36[2][0], 4), num(R36[2][1], 4), -R36[2][0], R36[2][1], 'θ₆ = Pol(−r₃₁, r₃₂):')]);
   });
+  /* ----- Ch4 (HW3) ----- */
+  hook('c4-hw-rp', (b, P) => {
+    const { r, sp } = b.calcData, [vx, vy] = r.v0;
+    setCalc(b, 6, [C.deg, C.comp,
+      row(`«(−) ${P.d2} sin ${P.t1} × ${num(P.td1, 2)} + cos ${P.t1} × ${num(P.dd2, 2)}» =`, '⁰v_x = −d₂s₁θ̇₁ + c₁ḋ₂', lcd(vx)),
+      row(`«${P.d2} cos ${P.t1} × ${num(P.td1, 2)} + sin ${P.t1} × ${num(P.dd2, 2)}» =`, '⁰v_y = d₂c₁θ̇₁ + s₁ḋ₂', lcd(vy)),
+      row(`SHIFT +:Pol «${num(vx, 4)}» SHIFT ):, «${num(vy, 4)}» ) =`, 'Pol(x, y)의 r이 곧 크기 √(x² + y²)입니다. 제곱·루트를 따로 할 필요 없음', `r=${lcd(sp)}\nθ=${lcd(atan2d(vy, vx))}`)]);
+  });
+  hook('c4-hw-3r', (b, P) => {
+    const { rates } = b.calcData;
+    const Jt = t => [[`(−) 0.3 sin ${t}`, `(−) 0.3 sin ${t}`, '0'], [`0.4 + 0.3 cos ${t} + 0.1`, `0.3 cos ${t} + 0.1`, '0.1'], ['1', '1', '1']];
+    const rows = [C.deg, C.matMode('1:MatA', '1:3×3'), matTyping(Jt(P.ths[0]), `MatA = ᵀJ (θ₂ = ${P.ths[0]}°). 칸에 sin·cos 식을 그대로 넣어도 됩니다`), C.matDim('2:MatB', '3:3×1'), row(`«${f(P.v, 3)}» = «0» = «0» =`, 'MatB = v'),
+      row('AC SHIFT 4:MATRIX 3:MatA x⁻¹ × SHIFT 4:MATRIX 4:MatB =', 'J⁻¹v (x⁻¹ 키가 역행렬)', mat(rates[0].map(v => [v])))];
+    P.ths.slice(1).forEach((t, i) => rows.push(row('AC SHIFT 4:MATRIX 2:Data 1:MatA', `MatA를 다시 열어 sin·cos 안의 각만 ${t}°로 고쳐 입력`), row('AC SHIFT 4:MATRIX 3:MatA x⁻¹ × SHIFT 4:MATRIX 4:MatB =', `θ₂ = ${t}°`, mat(rates[i + 1].map(v => [v])))));
+    setCalc(b, 9, rows);
+  });
+  hook('c4-hw-sensor', (b, P) => {
+    const { Pv, tN } = b.calcData, typ = v => v.map(x => `«${num(x, 3)}» =`).join(' ');
+    setCalc(b, 3, [C.vecMode, row(typ(Pv), 'VctA = ᵀP_SORG'), C.vecDim('2:VctB'), row(typ(P.F), 'VctB = ˢF'), C.vecDim('3:VctC'), row(typ(P.N), 'VctC = ˢN'),
+      row('AC SHIFT 5:VECTOR 3:VctA × SHIFT 5:VECTOR 4:VctB + SHIFT 5:VECTOR 5:VctC =', 'ᵀN = P × F + N (VECTOR 모드에서 × 는 외적)', mat(tN.map(v => [v])))]);
+  });
+  /* ----- Ch5 ----- */
+  hook('c5-hw-cubic', (b, P) => {
+    const { a, v } = b.calcData, t = P.tq;
+    setCalc(b, 2, [C.comp,
+      row(`«${num(a[0], 0)} + ${num(a[2], 4)} × ${t}² + ${num(a[3], 4)} × ${t}^3» =`, 'θ(t). 세제곱은 x■ 키로 입력 (화면의 ^3)', lcd(v[0])),
+      row(`«2 × ${num(a[2], 4)} × ${t} + 3 × ${num(a[3], 4)} × ${t}²» =`, 'θ̇(t)', lcd(v[1])),
+      row(`«2 × ${num(a[2], 4)} + 6 × ${num(a[3], 4)} × ${t}» =`, 'θ̈(t)', lcd(v[2]))]);
+  });
+  hook('c5-hw-lpb', (b, P) => {
+    const { lp } = b.calcData, d = P.tf - P.t0;
+    setCalc(b, 2, [C.comp, row(`«${P.T} ÷ 2 − √(${P.A}² × ${P.T}² − 4 × ${P.A} × ${d}) ÷ (2 × ${P.A})» =`, 't_b (루트 범위는 괄호로 닫기)', lcd(lp.tb))]);
+  });
   function mulR(a, b) { return [0, 1, 2].map(i => [0, 1, 2].map(j => a[i][0] * b[0][j] + a[i][1] * b[1][j] + a[i][2] * b[2][j])); }
   window.CALC = { lcd, eqnNumbers };
 })();
