@@ -1129,7 +1129,7 @@
           },
           {
             t: '② 역변환 두 개',
-            tex: R`\Tm{E}{H} = ({}^H_ET)^{-1} = ${ti(TEH)},\qquad \Tm{H}{5} = ({}^5_HT)^{-1} = \begin{bmatrix}R^T & -R^Tp\\0&1\end{bmatrix} = ${ti(TH5)}`,
+            tex: R`\begin{aligned}&T^{-1} = \begin{bmatrix}R^T & -R^Tp\\0&1\end{bmatrix}\\ &\Tm{E}{H} = ({}^H_ET)^{-1} = ${ti(TEH)},\qquad \Tm{H}{5} = ({}^5_HT)^{-1} = ${ti(TH5)}\end{aligned}`,
             html: R`<p>1.10절 공식: 회전 블록은 전치, 4열은 \(-R^Tp\). \({}^5_HT\)의 경우 \(R^T\)를 먼저 구하고 \(p=(${p3(T5H).join(', ')})\)에 곱한 뒤 부호를 바꿉니다.</p>`
           },
           {

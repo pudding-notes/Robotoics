@@ -751,13 +751,13 @@
           {
             t: '{1}: 회전 관절 1',
             do(S) { arw(S, 'w1', 'F1', [0, 0, p.td1], 1.2, { c: 'k', label: '¹ω₁', w: 0.9, lt: 1.1 }); },
-            tex: R`{}^1\omega_1 = {}^1_0R\,{}^0\omega_0 + \dot\theta_1\,{}^1\hat Z_1 = \begin{bmatrix}0\\0\\ \dot\theta_1\end{bmatrix},\qquad {}^1v_1 = {}^1_0R\left({}^0v_0 + {}^0\omega_0\times{}^0P_1\right) = \begin{bmatrix}0\\0\\0\end{bmatrix}`,
+            tex: R`\textbf{revolute:}\ {}^{i+1}\omega_{i+1} = {}^{i+1}_{\ \ i}R\,{}^i\omega_i + \dot\theta_{i+1}\hat Z,\ \ {}^{i+1}v_{i+1} = {}^{i+1}_{\ \ i}R\left({}^iv_i + {}^i\omega_i\times{}^iP_{i+1}\right)\ \Rightarrow\ {}^1\omega_1 = {}^1_0R\,{}^0\omega_0 + \dot\theta_1\,{}^1\hat Z_1 = \begin{bmatrix}0\\0\\ \dot\theta_1\end{bmatrix},\qquad {}^1v_1 = {}^1_0R\left({}^0v_0 + {}^0\omega_0\times{}^0P_1\right) = \begin{bmatrix}0\\0\\0\end{bmatrix}`,
             html: R`<p>베이스는 정지(\(\omega_0 = v_0 = 0\))해 있고 {1}의 원점은 {0}과 같은 점입니다. 따라서 \({}^1v_1 = 0\)이고 각속도는 관절 1의 \(\dot\theta_1\)뿐입니다.</p>`
           },
           {
             t: '{2}: 직동 관절 2',
             do(S) { rpArrows(S, p, 1); },
-            tex: R`\begin{aligned}{}^2\omega_2 &= {}^2_1R\,{}^1\omega_1 = {}^1_2R^T\,[0\ \ 0\ \ \dot\theta_1]^T = [0\ \ \dot\theta_1\ \ 0]^T\\ {}^2v_2 &= {}^2_1R\left({}^1v_1 + {}^1\omega_1\times{}^1P_2\right) + \dot d_2\,{}^2\hat Z_2 = {}^2_1R\,[0\ \ d_2\dot\theta_1\ \ 0]^T + [0\ \ 0\ \ \dot d_2]^T = [d_2\dot\theta_1\ \ 0\ \ \dot d_2]^T\end{aligned}`,
+            tex: R`\begin{aligned}&\textbf{prismatic:}\ {}^{i+1}\omega_{i+1} = {}^{i+1}_{\ \ i}R\,{}^i\omega_i,\quad {}^{i+1}v_{i+1} = {}^{i+1}_{\ \ i}R\left({}^iv_i + {}^i\omega_i\times{}^iP_{i+1}\right) + \dot d_{i+1}\,{}^{i+1}\hat Z_{i+1}\\ {}^2\omega_2 &= {}^2_1R\,{}^1\omega_1 = {}^1_2R^T\,[0\ \ 0\ \ \dot\theta_1]^T = [0\ \ \dot\theta_1\ \ 0]^T\\ {}^2v_2 &= {}^2_1R\left({}^1v_1 + {}^1\omega_1\times{}^1P_2\right) + \dot d_2\,{}^2\hat Z_2 = {}^2_1R\,[0\ \ d_2\dot\theta_1\ \ 0]^T + [0\ \ 0\ \ \dot d_2]^T = [d_2\dot\theta_1\ \ 0\ \ \dot d_2]^T\end{aligned}`,
             html: R`<p>직동 관절은 각속도를 더하지 않고, 선속도에 \(\dot d_2\hat Z_2\)를 더합니다. \({}^2_1R = {}^1_2R^T\)입니다.</p>
             ${ls([R`\({}^2\omega_2\)가 \(\hat Y_2\) 성분: \(\hat Y_2 = \hat Z_1\)이기 때문`, R`\(d_2\dot\theta_1\): 팔이 돌아서 생기는 속도, 팔에 수직(\(\hat X_2\))`, R`\(\dot d_2\): 팔이 늘어나는 속도, 팔 방향(\(\hat Z_2\))`])}`
           },
@@ -777,7 +777,7 @@
           {
             t: '숫자 대입',
             do(S) { rpArrows(S, p, 1); },
-            tex: R`{}^0v_2 = \begin{bmatrix}-(${p.d2})s_{${p.t1}}(${p.td1}) + c_{${p.t1}}(${p.dd2})\\ (${p.d2})c_{${p.t1}}(${p.td1}) + s_{${p.t1}}(${p.dd2})\end{bmatrix} = \begin{bmatrix}${f(r.v0[0], 4)}\\ ${f(r.v0[1], 4)}\end{bmatrix}\ \text{m/s},\qquad |{}^0v_2| = \sqrt{v_x^2+v_y^2} = ${f(sp, 4)}\ \text{m/s}`,
+            tex: R`{}^0v_2 = \begin{bmatrix}-d_2s_1\dot\theta_1 + c_1\dot d_2\\ d_2c_1\dot\theta_1 + s_1\dot d_2\end{bmatrix} = \begin{bmatrix}-(${p.d2})s_{${p.t1}}(${p.td1}) + c_{${p.t1}}(${p.dd2})\\ (${p.d2})c_{${p.t1}}(${p.td1}) + s_{${p.t1}}(${p.dd2})\end{bmatrix} = \begin{bmatrix}${f(r.v0[0], 4)}\\ ${f(r.v0[1], 4)}\end{bmatrix}\ \text{m/s},\qquad |{}^0v_2| = \sqrt{v_x^2+v_y^2} = \sqrt{(${f(r.v0[0], 4)})^2 + (${f(r.v0[1], 4)})^2} = ${f(sp, 4)}\ \text{m/s}`,
             html: R`<p>크기는 프레임에 무관하므로 \({}^2v_2\)로도 확인할 수 있습니다: \(\sqrt{(d_2\dot\theta_1)^2 + \dot d_2^{\,2}} = \sqrt{${f(p.d2 * p.td1, 4)}^2 + ${f(p.dd2, 4)}^2} = ${f(sp, 4)}\).</p>`
           },
           {
@@ -853,7 +853,7 @@
             {
               t: '① {1}, {2}로 속도 전파',
               do(S) { vel(S, 2, 2); },
-              tex: R`{}^1\omega_1 = \begin{bmatrix}0\\0\\ \dot\theta_1\end{bmatrix},\ {}^1v_1 = 0,\qquad {}^2\omega_2 = \begin{bmatrix}0\\0\\ \dot\theta_1+\dot\theta_2\end{bmatrix},\quad {}^2v_2 = {}^2_1R\begin{bmatrix}0\\ L_1\dot\theta_1\\ 0\end{bmatrix} = \begin{bmatrix}L_1s_2\dot\theta_1\\ L_1c_2\dot\theta_1\\ 0\end{bmatrix}`,
+              tex: R`{}^{i+1}\omega_{i+1} = {}^{i+1}_{\ \ i}R\,{}^i\omega_i + \dot\theta_{i+1}\hat Z,\ \ {}^{i+1}v_{i+1} = {}^{i+1}_{\ \ i}R\left({}^iv_i + {}^i\omega_i\times{}^iP_{i+1}\right)\ \Rightarrow\ {}^1\omega_1 = \begin{bmatrix}0\\0\\ \dot\theta_1\end{bmatrix},\ {}^1v_1 = 0,\qquad {}^2\omega_2 = \begin{bmatrix}0\\0\\ \dot\theta_1+\dot\theta_2\end{bmatrix},\quad {}^2v_2 = {}^2_1R\begin{bmatrix}0\\ L_1\dot\theta_1\\ 0\end{bmatrix} = \begin{bmatrix}L_1s_2\dot\theta_1\\ L_1c_2\dot\theta_1\\ 0\end{bmatrix}`,
               html: R`<p>4.3절의 2링크 결과와 같습니다. 화살표는 예시 자세 \(\Theta = (${QV3.join('^\\circ, ')}^\circ)\), \(\dot\Theta = (${QD3.join(', ')})\) rad/s에서 그린 것입니다.</p>`
             },
             {
@@ -872,7 +872,7 @@
             {
               t: '② 힘 전파: {T} → {3}',
               do(S) { frc(S, QV3, 3); },
-              tex: R`{}^3f_3 = {}^TF = \begin{bmatrix}f_x\\ f_y\\ 0\end{bmatrix},\qquad {}^3n_3 = {}^TN + {}^3P_T\times{}^3f_3 = \begin{bmatrix}0\\0\\ n_z + L_3f_y\end{bmatrix}\ \Rightarrow\ \tau_3 = L_3f_y + n_z`,
+              tex: R`{}^if_i = {}^i_{i+1}R\,{}^{i+1}f_{i+1},\ \ {}^in_i = {}^i_{i+1}R\,{}^{i+1}n_{i+1} + {}^iP_{i+1}\times{}^if_i,\ \ \tau_i = {}^in_i^{\,T}\hat Z_i\ \Rightarrow\ {}^3f_3 = {}^TF = \begin{bmatrix}f_x\\ f_y\\ 0\end{bmatrix},\qquad {}^3n_3 = {}^TN + {}^3P_T\times{}^3f_3 = \begin{bmatrix}0\\0\\ n_z + L_3f_y\end{bmatrix}\ \Rightarrow\ \tau_3 = L_3f_y + n_z`,
               html: R`<p>끝에서부터 거꾸로 전파합니다. 화살표는 예시 값 \(f_x = ${F3[0]}\), \(f_y = ${F3[1]}\) N, \(n_z = ${NZ3}\) N·m입니다.</p>`
             },
             {
@@ -905,7 +905,7 @@
             {
               t: '⑤ 특이점 근처에서 Θ̇ = J⁻¹v',
               do(S) { scene(S, [0, live0, -live0]); tipG2(S); },
-              tex: R`{}^TJ\big|_{(0,\theta_2,-\theta_2)} = \begin{bmatrix}-L_2s_{\theta_2} & -L_2s_{\theta_2} & 0\\ L_1+L_2c_{\theta_2}+L_3 & L_2c_{\theta_2}+L_3 & L_3\\ 1&1&1\end{bmatrix},\quad \dot\Theta = J^{-1}\begin{bmatrix}${f(P.v, 3)}\\0\\0\end{bmatrix}:\ ${P.ths.map((t, i) => R`\underset{\theta_2 = ${t}^\circ}{${cv(rates[i], 3)}}`).join(',\ ')}`,
+              tex: R`{}^TJ\big|_{(0,\theta_2,-\theta_2)} = \begin{bmatrix}-L_2s_{\theta_2} & -L_2s_{\theta_2} & 0\\ L_1+L_2c_{\theta_2}+L_3 & L_2c_{\theta_2}+L_3 & L_3\\ 1&1&1\end{bmatrix}\ \xrightarrow{\theta_2 = ${P.ths[0]}^\circ}\ ${bm(J3([0, P.ths[0], -P.ths[0]]), 4)},\quad \dot\Theta = J^{-1}\begin{bmatrix}${f(P.v, 3)}\\0\\0\end{bmatrix}:\ ${P.ths.map((t, i) => R`\underset{\theta_2 = ${t}^\circ}{${cv(rates[i], 3)}}`).join(',\ ')}`,
               html: R`<p>\(\theta_1+\theta_2+\theta_3 = 0\)이므로 {T}의 방향이 {0}과 같아 \({}^TJ = {}^0J\)입니다. 공구는 \(+\hat X\) 방향(팔을 펴는 방향)으로 움직여야 합니다.</p>
               ${ls([R`\(\det J = L_1L_2s_{\theta_2}\)가 작아질수록 관절 속도가 \(1/\sin\theta_2\)에 비례해 커짐`, R`\(\theta_2 = 1^\circ\) 근처에서는 같은 끝점 속도에 수십 배의 관절 속도 필요 → 실제 모터 한계를 넘음`, R`그래서 특이점 근처의 직교 좌표 경로는 피해야 함`])}`
             },
@@ -960,7 +960,7 @@
           },
           {
             t: '① 6×6 힘 변환 행렬',
-            tex: R`{}^TP_{SORG}\times = \begin{bmatrix}0 & -p_z & p_y\\ p_z & 0 & -p_x\\ -p_y & p_x & 0\end{bmatrix} = ${bm(skew(Pv), 3)},\qquad {}^T_ST_f = ${bm(Tf, 3)}`,
+            tex: R`{}^T_ST_f = \begin{bmatrix}{}^T_SR & 0\\ {}^TP_{SORG}\times{}^T_SR & {}^T_SR\end{bmatrix} = \begin{bmatrix}I & 0\\ {}^TP_{SORG}\times & I\end{bmatrix},\quad {}^TP_{SORG}\times = \begin{bmatrix}0 & -p_z & p_y\\ p_z & 0 & -p_x\\ -p_y & p_x & 0\end{bmatrix} = ${bm(skew(Pv), 3)},\qquad {}^T_ST_f = ${bm(Tf, 3)}`,
             html: R`<p>\(R = I\)이므로 왼쪽 아래 블록은 \(P\times\) 그 자체입니다.</p>`
           },
           {

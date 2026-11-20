@@ -839,7 +839,7 @@
           {
             t: '④ ⁰₃R과 ³₆R — 팔이 만든 회전 빼기',
             do(S) { pieperDraw(S, qs, { hide: [1, 2, 4], known: [1, 2, 3], joint: [1, 2, 3], limits: lim }); },
-            tex: R`{}^0_3R = R_Z(${f(g.t1, 2)}^\circ)R_X(-90^\circ)R_Z(${f(g.t2 + g.t3, 2)}^\circ) = ${tm(g.R03, 4)},\quad {}^3_6R = ({}^0_3R)^T\,{}^0_6R_d = ${tm(g.R36, 4)}`,
+            tex: R`\begin{aligned}&{}^0_3R = R_Z(\theta_1)R_X(-90^\circ)R_Z(\theta_2+\theta_3),\qquad {}^3_6R = ({}^0_3R)^T\,{}^0_6R_d\\ &{}^0_3R = R_Z(${f(g.t1, 2)}^\circ)R_X(-90^\circ)R_Z(${f(g.t2 + g.t3, 2)}^\circ) = ${tm(g.R03, 4)},\quad {}^3_6R = ${tm(g.R36, 4)}\end{aligned}`,
             html: R`<p>\({}^0_6R = {}^0_3R\,{}^3_6R\)에서 \({}^0_3R\)은 직교행렬이므로 역행렬 = 전치(1.4절). 팔 세 관절(빛나는 부분)이 만든 회전을 목표에서 빼면 손목이 담당할 회전이 남습니다.</p>`
           },
           {
@@ -906,19 +906,19 @@
             t: '① θ₂ — 관절 2',
             do(S) { algScene(S, p, { hide: [1, 2], known: [2], joint: [2], both: true, bothWarn: true, limits: { 2: [0, 180, '가정: θ₂ > 0'] } }); },
             assume: [{ t: R`\(\theta_2 > 0\) (\(s_2>0\)) 해 — 초록 호. 붉은 팔은 \(\theta_2<0\) 해`, ok: true }, { t: R`\(|c_2| \le 1\): \(c_2 = ${f(r.c2, 4)}\)`, ok: r.ok }],
-            tex: R`c_2 = \frac{${f(p.x * p.x + p.y * p.y, 4)} - 1.44 - 1}{2.4} = ${f(r.c2, 4)},\quad s_2 = +\sqrt{1-c_2^2} = ${f(s.s2, 4)},\quad \theta_2 = ${deg(s.t2)}`,
+            tex: R`c_2 = \frac{x^2+y^2-l_1^2-l_2^2}{2l_1l_2} = \frac{${f(p.x * p.x + p.y * p.y, 4)} - 1.44 - 1}{2.4} = ${f(r.c2, 4)},\quad s_2 = +\sqrt{1-c_2^2} = ${f(s.s2, 4)},\quad \theta_2 = ${deg(s.t2)}`,
             html: R`<p>흐린 팔이 \(\theta_2<0\)인 다른 해입니다.</p>`
           },
           {
             t: '② θ₁ — 관절 1',
             do(S) { algScene(S, p, { hide: [2], known: [1, 2], joint: [1], limits: { 2: [0, 180, '가정: θ₂ > 0'] } }); kVecs(S, s); },
-            tex: R`k_1 = 1.2 + 1.0c_2 = ${f(s.k1, 4)},\ k_2 = 1.0s_2 = ${f(s.k2, 4)},\quad \theta_1 = \text{atan2}(${p.y}, ${p.x}) - \text{atan2}(k_2, k_1) = ${deg(atan2d(p.y, p.x))} - ${deg(atan2d(s.k2, s.k1))} = ${deg(s.t1)}`,
+            tex: R`k_1 = l_1 + l_2c_2 = 1.2 + 1.0c_2 = ${f(s.k1, 4)},\ k_2 = l_2s_2 = ${f(s.k2, 4)},\quad \theta_1 = \text{atan2}(y, x) - \text{atan2}(k_2, k_1) = \text{atan2}(${p.y}, ${p.x}) - \text{atan2}(${f(s.k2, 4)}, ${f(s.k1, 4)}) = ${deg(atan2d(p.y, p.x))} - ${deg(atan2d(s.k2, s.k1))} = ${deg(s.t1)}`,
             html: R`<p>기하학적으로는 \(\theta_1 = \beta - \psi\) (θ₂ > 0이므로)와 같은 값입니다.</p>`
           },
           {
             t: '③ θ₃ — 관절 3',
             do(S) { algScene(S, p, { known: [1, 2, 3], joint: [3] }); },
-            tex: R`\theta_3 = ${p.phi}^\circ - (${f(s.t1, 2)}^\circ) - (${f(s.t2, 2)}^\circ) = ${deg(t3)}`,
+            tex: R`\theta_3 = \phi - \theta_1 - \theta_2 = ${p.phi}^\circ - (${f(s.t1, 2)}^\circ) - (${f(s.t2, 2)}^\circ) = ${deg(t3)}`,
             html: R`<p>손목 프레임이 목표 프레임과 겹쳤습니다.</p>`
           }
         ]

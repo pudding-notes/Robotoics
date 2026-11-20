@@ -514,21 +514,21 @@
           },
           {
             t: '① 계수',
-            tex: R`a_0 = ${P.t0},\quad a_1 = 0,\quad a_2 = \frac{3(${d})}{${P.T}^2} = ${f(a[2], 4)},\quad a_3 = -\frac{2(${d})}{${P.T}^3} = ${f(a[3], 4)}`,
+            tex: R`a_0 = \theta_0 = ${P.t0},\quad a_1 = 0,\quad a_2 = \frac{3(\theta_f-\theta_0)}{t_f^2} = \frac{3(${d})}{${P.T}^2} = ${f(a[2], 4)},\quad a_3 = -\frac{2(\theta_f-\theta_0)}{t_f^3} = -\frac{2(${d})}{${P.T}^3} = ${f(a[3], 4)}`,
             html: R`<p>\(\theta(t) = ${P.t0} ${pm(a[2])}t^2 ${pm(a[3])}t^3\)</p>`
           },
           {
             t: `② t = ${P.tq} s에서의 값`,
             do(S) { oneLink(S, v[0], gh, { from: P.t0 }); },
             vpInfo: plot(cb, P.tq),
-            tex: R`\theta = ${f(v[0], 3)}^\circ,\qquad \dot\theta = 2a_2t + 3a_3t^2 = ${f(v[1], 3)}^\circ/\text{s},\qquad \ddot\theta = 2a_2 + 6a_3t = ${f(v[2], 3)}^\circ/\text{s}^2`,
+            tex: R`\begin{aligned}\theta(t) &= a_0 + a_2t^2 + a_3t^3 = ${P.t0} + (${f(a[2], 4)})(${P.tq})^2 + (${f(a[3], 4)})(${P.tq})^3 = ${f(v[0], 3)}^\circ\\ \dot\theta(t) &= 2a_2t + 3a_3t^2 = 2(${f(a[2], 4)})(${P.tq}) + 3(${f(a[3], 4)})(${P.tq})^2 = ${f(v[1], 3)}^\circ/\text{s}\\ \ddot\theta(t) &= 2a_2 + 6a_3t = 2(${f(a[2], 4)}) + 6(${f(a[3], 4)})(${P.tq}) = ${f(v[2], 3)}^\circ/\text{s}^2\end{aligned}`,
             html: R`<p>각 식에 \(t = ${P.tq}\)를 대입합니다. 그래프의 세로선이 그 시각입니다.</p>`
           },
           {
             t: '③ 최대 속도와 시작 가속도',
             do(S) { oneLink(S, cb.ev(P.T / 2)[0], gh, { from: P.t0 }); },
             vpInfo: plot(cb, P.T / 2),
-            tex: R`\ddot\theta = 0\ \Rightarrow\ t = -\frac{a_2}{3a_3} = \frac{t_f}{2} = ${f(P.T / 2, 3)}\ \text{s},\quad \dot\theta_{max} = \frac{3}{2}\frac{\theta_f-\theta_0}{t_f} = ${f(1.5 * d / P.T, 4)}^\circ/\text{s},\quad \ddot\theta(0) = 2a_2 = ${f(2 * a[2], 4)}^\circ/\text{s}^2`,
+            tex: R`\ddot\theta = 0\ \Rightarrow\ t = -\frac{a_2}{3a_3} = \frac{t_f}{2} = ${f(P.T / 2, 3)}\ \text{s},\quad \dot\theta_{max} = \frac{3}{2}\frac{\theta_f-\theta_0}{t_f} = \frac{3}{2}\cdot\frac{${d}}{${P.T}} = ${f(1.5 * d / P.T, 4)}^\circ/\text{s},\quad \ddot\theta(0) = 2a_2 = 2(${f(a[2], 4)}) = ${f(2 * a[2], 4)}^\circ/\text{s}^2`,
             html: R`<p>속도가 최대인 순간은 가속도가 0인 순간이고, 3차 정지-정지 궤적에서는 항상 가운데 시점입니다.</p>`
           }
         ]
@@ -574,14 +574,14 @@
             t: '③ 혼합 끝 각과 직선 속도',
             do(S) { oneLink(S, lp.thb, gh, { from: P.t0 }); },
             vpInfo: plot(lp, lp.tb),
-            tex: R`\theta_b = \theta_0 + \tfrac12\ddot\theta t_b^2 = ${f(lp.thb, 4)}^\circ,\qquad \dot\theta_{lin} = \ddot\theta\,t_b = ${f(lp.V, 4)}^\circ/\text{s}`,
+            tex: R`\theta_b = \theta_0 + \tfrac12\ddot\theta t_b^2 = ${P.t0} + \tfrac12(${P.A})(${f(lp.tb, 4)})^2 = ${f(lp.thb, 4)}^\circ,\qquad \dot\theta_{lin} = \ddot\theta\,t_b = (${P.A})(${f(lp.tb, 4)}) = ${f(lp.V, 4)}^\circ/\text{s}`,
             html: R`<p>확인: 직선 \(\theta_b + \dot\theta_{lin}(t - t_b)\)가 \(t = t_f/2\)에서 중간값 \(${f((P.t0 + P.tf) / 2, 3)}^\circ\)를 지나야 합니다.</p>`
           },
           {
             t: `④ t = ${tq} s에서의 각`,
             do(S) { oneLink(S, vq[0], gh, { from: P.t0 }); },
             vpInfo: plot(lp, tq),
-            tex: tq <= lp.tb ? R`t \le t_b:\ \ \theta = \theta_0 + \tfrac12\ddot\theta t^2 = ${f(vq[0], 4)}^\circ` : R`t_b < t \le t_f - t_b:\ \ \theta = \theta_b + \dot\theta_{lin}(t - t_b) = ${f(lp.thb, 3)} + ${f(lp.V, 3)}(${tq} - ${f(lp.tb, 3)}) = ${f(vq[0], 4)}^\circ`,
+            tex: tq <= lp.tb ? R`t \le t_b:\ \ \theta = \theta_0 + \tfrac12\ddot\theta t^2 = ${P.t0} + \tfrac12(${P.A})(${tq})^2 = ${f(vq[0], 4)}^\circ` : R`t_b < t \le t_f - t_b:\ \ \theta = \theta_b + \dot\theta_{lin}(t - t_b) = ${f(lp.thb, 3)} + ${f(lp.V, 3)}(${tq} - ${f(lp.tb, 3)}) = ${f(vq[0], 4)}^\circ`,
             html: R`<p>먼저 그 시각이 어느 구간(혼합/직선)에 있는지 확인한 뒤 해당 식을 씁니다.</p>`
           }
         ]
@@ -619,7 +619,7 @@
           },
           {
             t: '① 첫 구간',
-            tex: R`\ddot\theta_1 = ${f(r.acc[0], 0)},\quad t_1 = ${td[0]} - \sqrt{${td[0]}^2 - \frac{2(${th[1] - th[0]})}{${f(r.acc[0], 0)}}} = ${f(r.tb[0], 4)},\quad \dot\theta_{12} = \frac{${th[1] - th[0]}}{${td[0]} - \frac12(${f(r.tb[0], 4)})} = ${f(r.vel[0], 4)}`,
+            tex: R`\begin{aligned}\ddot\theta_1 &= \text{sgn}(\theta_2-\theta_1)|\ddot\theta| = ${f(r.acc[0], 0)}\\ t_1 &= t_{d12} - \sqrt{t_{d12}^2 - \tfrac{2(\theta_2-\theta_1)}{\ddot\theta_1}} = ${td[0]} - \sqrt{${td[0]}^2 - \tfrac{2(${th[1] - th[0]})}{${f(r.acc[0], 0)}}} = ${f(r.tb[0], 4)}\\ \dot\theta_{12} &= \frac{\theta_2-\theta_1}{t_{d12} - \frac12t_1} = \frac{${th[1] - th[0]}}{${td[0]} - \frac12(${f(r.tb[0], 4)})} = ${f(r.vel[0], 4)}\end{aligned}`,
             html: R`<p>가속도 부호는 \(\theta_2 - \theta_1\)의 부호를 따릅니다.</p>`
           },
           {
@@ -629,19 +629,19 @@
           },
           {
             t: '③ 마지막 구간',
-            tex: R`\ddot\theta_4 = ${f(r.acc[3], 0)},\quad t_4 = ${td[2]} - \sqrt{${td[2]}^2 + \frac{2(${th[3] - th[2]})}{${f(r.acc[3], 0)}}} = ${f(r.tb[3], 4)},\quad \dot\theta_{34} = \frac{${th[3] - th[2]}}{${td[2]} - \frac12(${f(r.tb[3], 4)})} = ${f(r.vel[2], 4)}`,
+            tex: R`\begin{aligned}\ddot\theta_4 &= \text{sgn}(\theta_3-\theta_4)|\ddot\theta| = ${f(r.acc[3], 0)}\\ t_4 &= t_{d34} - \sqrt{t_{d34}^2 + \tfrac{2(\theta_4-\theta_3)}{\ddot\theta_4}} = ${td[2]} - \sqrt{${td[2]}^2 + \tfrac{2(${th[3] - th[2]})}{${f(r.acc[3], 0)}}} = ${f(r.tb[3], 4)}\\ \dot\theta_{34} &= \frac{\theta_4-\theta_3}{t_{d34} - \frac12t_4} = \frac{${th[3] - th[2]}}{${td[2]} - \frac12(${f(r.tb[3], 4)})} = ${f(r.vel[2], 4)}\end{aligned}`,
             html: R`<p>가속도 부호는 \(\theta_3 - \theta_4\)의 부호를 따릅니다(마지막에 속도를 0으로 줄이는 방향).</p>`
           },
           {
             t: '④ 내부 혼합',
-            tex: R`\ddot\theta_2 = ${f(r.acc[1], 0)},\ \ t_2 = \frac{${f(r.vel[1], 4)} - (${f(r.vel[0], 4)})}{${f(r.acc[1], 0)}} = ${f(r.tb[1], 4)},\qquad \ddot\theta_3 = ${f(r.acc[2], 0)},\ \ t_3 = \frac{${f(r.vel[2], 4)} - (${f(r.vel[1], 4)})}{${f(r.acc[2], 0)}} = ${f(r.tb[2], 4)}`,
+            tex: R`\begin{aligned}\ddot\theta_k &= \text{sgn}(\dot\theta_{kl}-\dot\theta_{jk})|\ddot\theta|,\qquad t_k = \frac{\dot\theta_{kl}-\dot\theta_{jk}}{\ddot\theta_k}\\ \ddot\theta_2 &= ${f(r.acc[1], 0)},\ \ t_2 = \frac{${f(r.vel[1], 4)} - (${f(r.vel[0], 4)})}{${f(r.acc[1], 0)}} = ${f(r.tb[1], 4)}\\ \ddot\theta_3 &= ${f(r.acc[2], 0)},\ \ t_3 = \frac{${f(r.vel[2], 4)} - (${f(r.vel[1], 4)})}{${f(r.acc[2], 0)}} = ${f(r.tb[2], 4)}\end{aligned}`,
             html: R`<p>부호는 (다음 직선 속도 − 앞 직선 속도)의 부호입니다.</p>`
           },
           {
             t: '⑤ 직선 구간 시간',
             do(S) { oneLink(S, th[3], gh, { from: th[0] }); },
             vpInfo: plot(r, r.T, { title: '계산한 LPB 궤적' }),
-            tex: R`t_{12} = t_{d12} - t_1 - \tfrac12t_2 = ${f(r.lin[0], 4)},\quad t_{23} = t_{d23} - \tfrac12t_2 - \tfrac12t_3 = ${f(r.lin[1], 4)},\quad t_{34} = t_{d34} - t_4 - \tfrac12t_3 = ${f(r.lin[2], 4)}`,
+            tex: R`\begin{aligned}t_{12} &= t_{d12} - t_1 - \tfrac12t_2 = ${td[0]} - ${f(r.tb[0], 4)} - \tfrac12(${f(r.tb[1], 4)}) = ${f(r.lin[0], 4)}\\ t_{23} &= t_{d23} - \tfrac12t_2 - \tfrac12t_3 = ${td[1]} - \tfrac12(${f(r.tb[1], 4)}) - \tfrac12(${f(r.tb[2], 4)}) = ${f(r.lin[1], 4)}\\ t_{34} &= t_{d34} - t_4 - \tfrac12t_3 = ${td[2]} - ${f(r.tb[3], 4)} - \tfrac12(${f(r.tb[2], 4)}) = ${f(r.lin[2], 4)}\end{aligned}`,
             html: R`<p>모든 직선 구간 시간이 양수이면 주어진 가속도로 충분합니다. 음수가 나오면 가속도를 키워야 합니다.</p>`
           }
         ]
