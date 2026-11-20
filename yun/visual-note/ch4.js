@@ -769,10 +769,14 @@
             <p>\(\dot\theta_1\)과 \(\dot d_2\)의 계수를 열로 모으면 자코비안입니다.</p>`
           },
           {
-            t: '직접 미분으로 확인',
-            tex: R`{}^0_2T = {}^0_1T\,{}^1_2T\ \Rightarrow\ {}^0P_2 = R_Z(\theta_1)\begin{bmatrix}d_2\\0\\0\end{bmatrix} = \begin{bmatrix}d_2c_1\\ d_2s_1\end{bmatrix}\ \xrightarrow{\ d/dt\ }\ \begin{bmatrix}\dot d_2c_1 - d_2s_1\dot\theta_1\\ \dot d_2s_1 + d_2c_1\dot\theta_1\end{bmatrix}`,
-            html: R`<p>곱의 미분(\(d_2\)와 \(\theta_1\) 모두 시간의 함수)을 쓰면 앞 단계의 \({}^0v_2\)와 똑같습니다.</p>
-            <p>\(\dfrac{\partial}{\partial\theta_1}\)과 \(\dfrac{\partial}{\partial d_2}\)로 편미분해 열을 만들어도 \({}^0J\)가 그대로 나옵니다.</p>`
+            t: '직접 미분 · 편미분으로 자코비안 만들기',
+            do(S) { rpArrows(S, p, 1); },
+            tex: R`\begin{aligned}&{}^0P_2 = R_Z(\theta_1)\,[d_2\ 0\ 0]^T \Rightarrow \begin{bmatrix}x\\ y\end{bmatrix} = \begin{bmatrix}d_2c_1\\ d_2s_1\end{bmatrix}\\ &\text{①}\ \tfrac{d}{dt}:\ {}^0v_2 = \begin{bmatrix}\dot d_2c_1 - d_2s_1\dot\theta_1\\ \dot d_2s_1 + d_2c_1\dot\theta_1\end{bmatrix}\\ &\text{②}\ {}^0v_2 = \tfrac{\partial P}{\partial\theta_1}\dot\theta_1 + \tfrac{\partial P}{\partial d_2}\dot d_2\\ &\text{③}\ {}^0J = \begin{bmatrix}\frac{\partial x}{\partial\theta_1} & \frac{\partial x}{\partial d_2}\\ \frac{\partial y}{\partial\theta_1} & \frac{\partial y}{\partial d_2}\end{bmatrix} = \begin{bmatrix}-d_2s_1 & c_1\\ d_2c_1 & s_1\end{bmatrix}\end{aligned}`,
+            html: R`<p>① \(d_2\)와 \(\theta_1\)이 모두 시간의 함수이므로 곱의 미분을 씁니다. 결과가 앞 단계의 \({}^0v_2\)와 같습니다.</p>
+            <p>② \(P\)가 \(\theta_1, d_2\)의 함수이므로 연쇄 법칙(chain rule)으로 쓰면, \(\dot\theta_1\)과 \(\dot d_2\) 앞에 붙는 편미분이 자코비안의 열이 됩니다.</p>
+            <p>③ 열마다 한 변수로만 편미분하고 나머지는 상수로 둡니다: \(\frac{\partial(d_2c_1)}{\partial\theta_1} = -d_2s_1\), \(\frac{\partial(d_2c_1)}{\partial d_2} = c_1\), \(\frac{\partial(d_2s_1)}{\partial\theta_1} = d_2c_1\), \(\frac{\partial(d_2s_1)}{\partial d_2} = s_1\).</p>
+            ${ls([R`1열 \(\partial P/\partial\theta_1\): \(d_2\)는 상수, \(c_1\to -s_1\), \(s_1\to c_1\) → 팔에 수직인 방향 (빨강 화살표)`, R`2열 \(\partial P/\partial d_2\): \(\theta_1\)은 상수 → \((c_1, s_1)\), 팔 방향 단위벡터 (파랑 화살표)`])}
+            <p>속도 전파로 구한 \({}^0J\)와 똑같습니다.</p>`
           },
           {
             t: '숫자 대입',

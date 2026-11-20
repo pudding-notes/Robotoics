@@ -231,7 +231,7 @@
       2: ck('¹ω₁과 ¹v₁을 쓰시오.', sym('¹ω₁', 3, 1, e => [[0], [0], [e.td1]], env, V, { hint: H }), sym('¹v₁', 3, 1, () => [[0], [0], [0]], env, V, { hint: H })),
       3: ck('²ω₂와 ²v₂를 쓰시오.', sym('²ω₂', 3, 1, e => [[0], [e.td1], [0]], env, V, { hint: H }), sym('²v₂', 3, 1, e => [[e.d2 * e.td1], [0], [e.dd2]], env, V, { hint: H })),
       4: ck('⁰v₂의 x, y 성분과 ⁰J를 쓰시오.', sym('⁰v₂', 2, 1, v0, env, V, { hint: H }), sym('⁰J', 2, 2, e => [[-e.d2 * e.s1, e.c1], [e.d2 * e.c1, e.s1]], env, V, { hint: H })),
-      5: ck('⁰P₂의 x, y 성분을 쓰시오.', sym('⁰P₂', 2, 1, e => [[e.d2 * e.c1], [e.d2 * e.s1]], env, V, { hint: H })),
+      5: ck('⁰P₂의 x, y 성분을 쓰고, 편미분으로 ⁰J를 만드시오.', sym('⁰P₂', 2, 1, e => [[e.d2 * e.c1], [e.d2 * e.s1]], env, V, { hint: H }), sym('⁰J = ∂P/∂(θ₁, d₂)', 2, 2, e => [[-e.d2 * e.s1, e.c1], [e.d2 * e.c1, e.s1]], env, V, { hint: H })),
       6: ck('⁰v₂(숫자)와 크기를 구하시오.', mat('⁰v₂', r.v0.map(x => [x]), { tol: 0.0006 }), num('|⁰v₂|', sp, { tol: 0.0006 }))
     };
   });
