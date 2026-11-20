@@ -894,9 +894,13 @@
             {
               t: '③ A = ᵀJᵀ와 가상 일',
               do(S) { frc(S, QV3, 1); },
-              tex: R`\begin{aligned}{}^TJ &= \begin{bmatrix}L_1s_{23}+L_2s_3 & L_2s_3 & 0\\ L_1c_{23}+L_2c_3+L_3 & L_2c_3+L_3 & L_3\\ 1 & 1 & 1\end{bmatrix}\ \Rightarrow\ {}^TJ^T = \begin{bmatrix}L_1s_{23}+L_2s_3 & L_1c_{23}+L_2c_3+L_3 & 1\\ L_2s_3 & L_2c_3+L_3 & 1\\ 0 & L_3 & 1\end{bmatrix} = A(\Theta)\\ &{}^T\mathcal F^T\,\delta\mathcal X = \tau^T\delta\Theta\quad(\text{가상 일: 직교 좌표의 일} = \text{관절 좌표의 일})\\ &\delta\mathcal X = {}^TJ\,\delta\Theta\ \Rightarrow\ {}^T\mathcal F^T\,{}^TJ\,\delta\Theta = \tau^T\delta\Theta\ \Rightarrow\ \left({}^TJ^T\,{}^T\mathcal F - \tau\right)^T\delta\Theta = 0\quad(\forall\,\delta\Theta)\\ &\Rightarrow\ \tau = {}^TJ^T\,{}^T\mathcal F\end{aligned}`,
-              html: R`<p>②의 \(A\)를 ①의 \({}^TJ\)와 비교하면 행과 열이 바뀐 것뿐입니다.</p>
-              ${ls([R`이유: 작은 가상 변위에 대해 끝점이 한 일 \(\mathcal F\cdot\delta\mathcal X\)와 관절이 한 일 \(\tau\cdot\delta\Theta\)가 같아야 함 (마찰·중력 무시, 정지 상태)`, R`\(\delta\mathcal X = J\delta\Theta\)를 대입하면 \((J^T\mathcal F - \tau)^T\delta\Theta = 0\)이 모든 \(\delta\Theta\)에 대해 성립 → \(\tau = J^T\mathcal F\)`, R`\(J\)와 \(\mathcal F\)는 같은 프레임 {T}로 표현해야 함`])}`
+              tex: R`\begin{aligned}&W = F\cdot dx\qquad(\text{일} = \text{힘}\cdot\text{변위},\ \text{회전이면}\ W = \tau\cdot d\theta)\\ &\delta W_{\text{직교}} = {}^T\mathcal F\cdot\delta\mathcal X = {}^T\mathcal F^T\delta\mathcal X,\qquad \delta W_{\text{관절}} = \tau\cdot\delta\Theta = \tau^T\delta\Theta\\ &\text{에너지 보존:}\ \ {}^T\mathcal F^T\delta\mathcal X = \tau^T\delta\Theta\\ &\delta\mathcal X = {}^TJ\,\delta\Theta\ \text{대입:}\ \ {}^T\mathcal F^T\,{}^TJ\,\delta\Theta = \tau^T\delta\Theta\ \Rightarrow\ \left({}^T\mathcal F^T\,{}^TJ - \tau^T\right)\delta\Theta = 0\quad(\forall\,\delta\Theta)\\ &\Rightarrow\ \tau^T = {}^T\mathcal F^T\,{}^TJ\ \xrightarrow{\ \text{전치}\ }\ \tau = {}^TJ^T\,{}^T\mathcal F\\ &{}^TJ^T = \begin{bmatrix}L_1s_{23}+L_2s_3 & L_1c_{23}+L_2c_3+L_3 & 1\\ L_2s_3 & L_2c_3+L_3 & 1\\ 0 & L_3 & 1\end{bmatrix} = A(\Theta)\end{aligned}`,
+              html: R`<p><b>일 관점에서 본 에너지 보존에 의한 등가관계</b>로 \(A = {}^TJ^T\)를 설명합니다.</p>
+              <p>일은 힘과 그 힘 방향으로 움직인 거리의 곱입니다(\(W = F\cdot dx\)). 회전에서는 토크와 회전각의 곱(\(W = \tau\cdot d\theta\))입니다.</p>
+              <p>로봇이 정지한 채 환경을 밀고 있을 때, 아주 작게 움직였다고 가정해 봅니다(<b>가상 변위(virtual displacement)</b>).</p>
+              ${ls([R`공구 끝 기준: 공구가 낸 힘 \({}^T\mathcal F\) × 공구의 가상 변위 \(\delta\mathcal X\) = 공구 끝이 한 일`, R`관절 기준: 관절 토크 \(\tau\) × 관절의 가상 회전 \(\delta\Theta\) = 모터가 한 일`, R`마찰·중력이 없으면 에너지가 새지 않으므로 두 일은 같아야 함 → 같은 일을 두 좌표계로 본 <b>등가관계</b>`])}
+              <p>변위는 자코비안으로 이어져 있습니다(\(\delta\mathcal X = J\,\delta\Theta\)). 이를 대입하면 어떤 \(\delta\Theta\)에 대해서도 성립해야 하므로 괄호 안이 0이어야 하고, 결국 \(\tau = J^T\mathcal F\)가 됩니다.</p>
+              <p>그래서 ②에서 힘을 전파해 얻은 \(A\)가 ①의 \({}^TJ\)의 전치와 정확히 같습니다. 단, \(J\)와 \(\mathcal F\)는 같은 프레임 {T}로 표현해야 합니다.</p>`
             },
             {
               t: '④ 특이 자세',
