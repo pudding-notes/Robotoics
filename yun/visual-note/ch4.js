@@ -904,11 +904,11 @@
             },
             {
               t: '④ 특이 자세',
-              do(S) { scene(S, [20, 0, 25]); arm(S, L3u, [20, 180, 25], { tId: 'GT', pre: 'g', noFrames: true, hideTool: true, op: 0.25, noLabels: true }); },
-              view: { pos: [1.4, -6.2, 1.6], target: [1.1, 0, 0.5] },
+              do(S) { singPoses(S); },
+              view: { pos: [0.1, -7.4, 1.5], target: [0.1, 0, 0.45] },
               tex: R`\begin{aligned}{}^TJ &= \begin{bmatrix}a & b & 0\\ c & d & L_3\\ 1&1&1\end{bmatrix},\quad a = L_1s_{23}+L_2s_3,\ b = L_2s_3,\ c = L_1c_{23}+L_2c_3+L_3,\ d = L_2c_3+L_3\\ \det{}^TJ &= a\begin{vmatrix}d & L_3\\ 1 & 1\end{vmatrix} - b\begin{vmatrix}c & L_3\\ 1 & 1\end{vmatrix} + 0\begin{vmatrix}c & d\\ 1&1\end{vmatrix} = a(d - L_3) - b(c - L_3)\\ &= (L_1s_{23}+L_2s_3)(L_2c_3) - L_2s_3(L_1c_{23}+L_2c_3)\\ &= L_1L_2s_{23}c_3 + L_2^2s_3c_3 - L_1L_2c_{23}s_3 - L_2^2s_3c_3 = L_1L_2(s_{23}c_3 - c_{23}s_3)\\ &= L_1L_2\sin\big((\theta_2+\theta_3) - \theta_3\big) = L_1L_2\,s_2 = 0\ \Leftrightarrow\ \theta_2 = 0^\circ,\ 180^\circ\end{aligned}`,
               html: R`<p>셋째 열 \((0, L_3, 1)\)을 이용해 전개하면(또는 셋째 열 기준 소거) 위처럼 간단해집니다.</p>
-              ${ls([R`\(\theta_2 = 0^\circ\): 링크 1·2가 일직선 (진한 팔) → 손목점이 바깥 경계 \(r = L_1+L_2\)`, R`\(\theta_2 = 180^\circ\): 링크 2가 링크 1 위로 완전히 접힘 (흐린 팔) → 안쪽 경계 \(r = L_1-L_2\)`, R`둘 다 <b>작업공간 경계 특이점</b>. 평면 팔은 회전축이 모두 평행해 한 줄로 겹칠 수 없으므로 내부 특이점은 없음`, R`\(\theta_1, \theta_3\)는 det에 나타나지 않음: 어떤 값이어도 특이`])}`
+              ${ls([R`\(\theta_2 = 0^\circ\): 링크 1·2가 일직선 (회색 팔) → 손목점(링크 2 끝)이 바깥 회색 원 \(r = L_1+L_2\)`, R`\(\theta_2 = 180^\circ\): 링크 2가 링크 1 위로 완전히 접힘 (빨간 팔) → 손목점이 안쪽 회색 원 \(r = L_1-L_2\)`, R`둘 다 <b>작업공간 경계 특이점</b>. 평면 팔은 회전축이 모두 평행해 한 줄로 겹칠 수 없으므로 내부 특이점은 없음`, R`\(\theta_1, \theta_3\)는 det에 나타나지 않음: 어떤 값이어도 특이`])}`
             },
             {
               t: '⑤ 특이점 근처에서 Θ̇ = J⁻¹v',
@@ -931,6 +931,22 @@
         };
       }
     });
+    // both singular poses: θ2 = 0° (stretched) and θ2 = 180° (folded), with the wrist-point workspace boundaries
+    function singPoses(S) {
+      wipe(S);
+      const qa = [15, 0, 30], qb = [140, 180, 35];
+      const Ta = arm(S, L3u, qa, { tId: 'FT', tLabel: 'T', fs: 0.26, hide: [1, 2, 3], hideTool: true, frameOpt: { 0: { size: 0.4 } } });
+      const Tb = arm(S, L3u, qb, { pre: 'g', tId: 'GT', c: 'warn', noFrames: true, hideTool: true, noLabels: true, op: 0.9 });
+      const ro = L3u[0] + L3u[1], ri = L3u[0] - L3u[1];
+      arc(S, 'bo', { f: 'F0', c: [0, 0, 0], n: Z, u: X, ang: 359, r: ro, noHead: true, col: 'mute' });
+      arc(S, 'bi', { f: 'F0', c: [0, 0, 0], n: Z, u: X, ang: 359, r: ri, noHead: true, col: 'mute' });
+      pt(S, 'wa', p3(Ta[2]), 'θ₂ = 0° (쭉 폄)', { c: 'ink' });
+      pt(S, 'wb', p3(Tb[2]), 'θ₂ = 180° (접힘)', { c: 'warn' });
+      pt(S, 'xa', p3(Ta[3]), '손목점', { c: 'ink', r: 0.6 });
+      pt(S, 'xb', p3(Tb[3]), '손목점', { c: 'warn', r: 0.6 });
+      pt(S, 'lo', app(base, [ro * c(-35), ro * s(-35), 0]), 'r = L₁+L₂', { c: 'mute', r: 0.01 });
+      pt(S, 'li', app(base, [ri * c(-60), ri * s(-60), 0]), 'r = L₁−L₂', { c: 'mute', r: 0.01 });
+    }
     function tipG2(S) { fr(S, 'GT', fromRp(R3(base), p3(S.frames.FT.T)), { hidden: true }); arw(S, 'vd', 'GT', [1, 0, 0], 0.45, { c: 'pt', label: 'v', w: 1.2, lt: 1.15 }); }
   }
 
