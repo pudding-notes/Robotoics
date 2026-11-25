@@ -981,7 +981,8 @@
             t: '문제',
             tex: R`{}^S_TT = \begin{bmatrix}1&0&0&${P.px}\\0&1&0&0\\0&0&1&${P.pz}\\0&0&0&1\end{bmatrix}\ (\text{m}),\qquad {}^T\mathcal F = {}^T_ST_f\;{}^S\mathcal F,\quad {}^T_ST_f = \begin{bmatrix}{}^T_SR & 0\\ {}^TP_{SORG}\times{}^T_SR & {}^T_SR\end{bmatrix}`,
             html: R`<p>마지막 링크와 L자 공구 사이에 힘 센서가 있습니다. 센서는 자기 프레임 {S}에서 힘·모멘트 \({}^S\mathcal F = [{}^SF^T\ {}^SN^T]^T\)를 잽니다. {T}는 공구 끝에 있고 {S}와 방향이 같습니다.</p>
-            <ol class="ls"><li>\({}^T_ST\)를 구하고 6×6 행렬 \({}^T_ST_f\)를 숫자로 쓰시오.</li><li>\({}^SF = (${P.F.join(', ')})\) N, \({}^SN = (${P.N.map(v => f(v, 3)).join(', ')})\) N·m일 때 \({}^TF\), \({}^TN\)을 구하고, 공구 끝에 모멘트가 없는데도 센서가 모멘트를 재는 이유를 설명하시오.</li></ol>`
+            <ol class="ls"><li>\({}^T_ST\)를 구하고 6×6 행렬 \({}^T_ST_f\)를 숫자로 쓰시오.</li><li>\({}^SF = (${P.F.join(', ')})\) N, \({}^SN = (${P.N.map(v => f(v, 3)).join(', ')})\) N·m일 때 \({}^TF\), \({}^TN\)을 구하고, 공구 끝에 모멘트가 없는데도 센서가 모멘트를 재는 이유를 설명하시오.</li></ol>
+            <p class="note">문제지 본문의 \({}^T\mathcal F = {}^S_TT\,{}^S\mathcal F\)는 \({}^T\mathcal F = {}^T_ST_f\,{}^S\mathcal F\)의 오타로 보고 풉니다. 바로 아래 "where"에서 정의한 행렬이 \({}^T_ST_f\)이고, 위첨자·아래첨자 소거 규칙(\({}^T_S\cdot{}^S\to{}^T\))이 맞으며, 4×4 \({}^S_TT\)는 6×1 벡터에 곱할 수 없기 때문입니다.</p>`
           },
           {
             t: '① ᵀ_ST = (ˢ_TT)⁻¹',
