@@ -996,9 +996,11 @@
           {
             t: '② ᵀF와 ᵀN',
             do(S) { sensorForces(S, P.F, P.N, tF, tN, 1); },
-            tex: R`\begin{aligned}\begin{bmatrix}{}^TF\\ {}^TN\end{bmatrix} &= {}^T_ST_f\begin{bmatrix}{}^SF\\ {}^SN\end{bmatrix}\ \Rightarrow\ {}^TF = I\,{}^SF = ${cv(tF, 3)}\ \text{N},\qquad {}^TN = {}^TP_{SORG}\times{}^SF + I\,{}^SN\\ {}^TP_{SORG}\times{}^SF &= ${cv(Pv, 3)}\times${cv(P.F, 3)} = \begin{bmatrix}p_yF_z - p_zF_y\\ p_zF_x - p_xF_z\\ p_xF_y - p_yF_x\end{bmatrix} = \begin{bmatrix}(0)(${P.F[2]}) - (${f(Pv[2], 3)})(${P.F[1]})\\ (${f(Pv[2], 3)})(${P.F[0]}) - (${f(Pv[0], 3)})(${P.F[2]})\\ (${f(Pv[0], 3)})(${P.F[1]}) - (0)(${P.F[0]})\end{bmatrix} = ${cv(cross(Pv, P.F), 3)}\\ {}^TN &= ${cv(cross(Pv, P.F), 3)} + ${cv(P.N, 3)} = ${cv(tN, 3)}\ \text{N·m}\end{aligned}`,
-            html: R`<p>6×6 행렬을 곱하는 것은 위 두 식을 한 번에 계산하는 것과 같습니다.</p>
-            ${ls([R`위 3줄: 힘은 회전만 (\(R = I\)이라 그대로)`, R`아래 3줄: 지렛대 항 \(P\times F\) + 센서 모멘트`])}`
+            tex: R`\begin{aligned}\begin{bmatrix}{}^TF\\ {}^TN\end{bmatrix} &= {}^T_ST_f\begin{bmatrix}{}^SF\\ {}^SN\end{bmatrix} = \begin{bmatrix}R & 0\\ P\times R & R\end{bmatrix}\begin{bmatrix}{}^SF\\ {}^SN\end{bmatrix} = \begin{bmatrix}R\,{}^SF + 0\cdot{}^SN\\ (P\times R)\,{}^SF + R\,{}^SN\end{bmatrix}\\ &\text{이 문제는 } R = {}^T_SR = I\text{ 이므로}\\ {}^TF &= I\,{}^SF = ${cv(tF, 3)}\ \text{N}\\ {}^TN &= {}^TP_{SORG}\times{}^SF + I\,{}^SN\\ {}^TP_{SORG}\times{}^SF &= ${cv(Pv, 3)}\times${cv(P.F, 3)} = \begin{bmatrix}p_yF_z - p_zF_y\\ p_zF_x - p_xF_z\\ p_xF_y - p_yF_x\end{bmatrix} = \begin{bmatrix}(0)(${P.F[2]}) - (${f(Pv[2], 3)})(${P.F[1]})\\ (${f(Pv[2], 3)})(${P.F[0]}) - (${f(Pv[0], 3)})(${P.F[2]})\\ (${f(Pv[0], 3)})(${P.F[1]}) - (0)(${P.F[0]})\end{bmatrix} = ${cv(cross(Pv, P.F), 3)}\\ {}^TN &= ${cv(cross(Pv, P.F), 3)} + ${cv(P.N, 3)} = ${cv(tN, 3)}\ \text{N·m}\end{aligned}`,
+            html: R`<p><b>첫 식은 문제에서 주어진 \({}^T\mathcal F = {}^T_ST_f\,{}^S\mathcal F\)를 블록 단위로 곱한 것입니다.</b> \(\mathcal F = [F;\ N]\)은 힘 3개와 모멘트 3개를 쌓은 6×1 벡터이고, \(T_f\)는 3×3 블록 4개로 된 6×6 행렬입니다.</p>
+            <p>블록 행렬도 블록 하나를 숫자 하나처럼 보고 "행 × 열"로 곱합니다: \(\begin{bmatrix}A&B\\C&D\end{bmatrix}\begin{bmatrix}x\\y\end{bmatrix} = \begin{bmatrix}Ax+By\\Cx+Dy\end{bmatrix}\).</p>
+            ${ls([R`위 칸(힘): \(R\,{}^SF + 0\cdot{}^SN = R\,{}^SF\). 힘은 어느 점에서 재든 같으므로 축 방향만 바꿔 적음 → 오른쪽 위 블록이 0`, R`아래 칸(모멘트): \((P\times R)\,{}^SF + R\,{}^SN\). 기준점을 S에서 T로 옮기면 지렛대 항 \(P\times F\)가 더해짐 (4.6절 \(n_i = R\,n_{i+1} + P\times f\)와 같은 구조)`, R`이 문제는 {S}와 {T}의 방향이 같아 \(R = I\)이므로 \({}^TF = {}^SF\), \({}^TN = {}^TP_{SORG}\times{}^SF + {}^SN\)`])}
+            <p>6×6 행렬을 통째로 곱해도 결과는 같지만, 블록으로 나누면 힘과 모멘트를 따로 볼 수 있어 계산이 짧아집니다.</p>`
           },
           {
             t: '② 왜 센서는 모멘트를 재는가',
